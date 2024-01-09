@@ -1,0 +1,286 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Project 1
+		</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+
+	<ul class="actions special">
+		<li><a href="Project2.html" class="button large">Next Project</a></li>
+	</ul>
+
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Kim Dang Portfolio</a>
+					</header>
+
+					
+				
+			
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Projects</a></li>
+							<li><a href="generic.html">About Me</a></li>
+							
+						</ul>
+						<ul class="icons">
+							<li><a href="https://www.linkedin.com/in/kim-dang-38112a192/" class="icon brands alt fa-linkedin"><span class="label">Linkedin</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>Neurological Image Classification Using Deep Neural Network<br />
+									</h1>
+								</header>
+								<hr/>
+								<!-- Text stuff -->
+									<h2>Overview</h2>
+									<p>This project aims to create a deep neural network that would classify axon images from patients with 
+										Autism Spectrum Disorder. Through results analysis and visualization, we can create an automatic medicinal 
+										classification system, as well as identifying key markers representing axon patterns in ASD. </a>.</p>
+									
+
+										<hr/>
+
+										<h2>Knowledge Gap</h2>
+										<blockquote>
+											Neuroanatomists are able to identify axon pattern markers in brains from a healthy control population (CTR) versus patients with Autism Spectrum Disorder (ASD), yet, this process demands labor intensive surveys of microscopic sections. We propose a machine learning method to automatically classify microscopic sections from ASD and CTR brains, while also taking into account the different white matter regions: superficial white matter (SWM) and deep white matter (DWM).
+											With more training, this method could make this labor-consuming process more automated and labor-free. In addition, comparing the network’s ASD-identifying regions with neuroanatomists could point to discovery of other distinguishing anatomical markers among ASD patients that could have been overlooked by the human eyes. 
+
+										</blockquote>
+										<hr/>
+
+										<h2>Transfer Learning with GoogleNet</h2>
+										<span class="image fit"><img src="images/googlenet 2.jpeg" alt="" /></span>
+										<hr/>
+
+									
+
+								<!-- Image Preprocessing -->
+									<h2> Dataset Selection</h2>
+									<span class="image right"><img src="images/Case Table.png" alt="" /></span>
+									<p> Two datasets consisting of post-mortem human brain microscopic sections were acquired from the Human Systems Neuroscience Laboratory, directed by PI Basilis Zikopoulos. One dataset consisted of electron microscopy images, and the other dataset consisted of toluidine blue-stained optical microscopy images. These images were labeled based on the population type of where the sections were obtained from: healthy control group versus patients with ASD, and further divided according to the location of origin of the white matter: superficial white matter versus deep white matter. The resulting four classes were labeled as "Control Deep White Matter" (CTR DWM), "Control Superficial White Matter" (CTR SWM), "Autism Spectrum Disorder Deep White Matter" (ASD DWM), and "Autism Spectrum Disorder Superficial White Matter" (ASD SWM).
+									<br>
+									In order to avoid overfitting in the trained network, we employed a data splitting method that would ensure a complete separation across cases between the training and testing dataset. The EM images and the optical microscopy images are separated differently due to their variances in case and image availability. 
+									</p>
+									
+									<hr/>
+									<h2>Image Preprocessing</h2>
+									<dl>
+										<dt>Sliding Window</dt>
+										<dd>
+									<p>The sliding window technique (as illustrated in the figure below) solves two problems:
+									
+										</p>
+										<div class="col-6 col-12-medium">
+									
+											<ul>
+												<li>Fit the image into the right input size required by the network.</li>
+												<li>Increase the number of training images due to limited dataset.</li>
+											</dd>
+									<span class="image fit"><img src="images/ImageProcessing.png" alt="" /></span>
+										<dt> Data Augmentation</dt>
+										<span class="image right"><img src="images/data-aug.png" alt="" /></span>
+										
+										<dd> There are a few challenges with the images before we feed them to the network for training:
+											<div class="col-6 col-12-medium">
+									
+												<ul>
+													<li>Each image has parameters for sizing: numrows, numcols.</li>
+													<li>Grayscale images are only 1-D (n-by-m-by 1) while most deep learning networks take input images as 3D array (n-by-m-by-3).</li>
+													<li>Objects may appear in different locations of the images, upside down etc. which may decrease generalization. </li>
+									
+												 
+												Therefore, images need to be preprocessed beforehand. 
+
+											</p>
+										</dd>
+										
+</dl>
+									<hr/>
+
+									
+									
+
+									<h2>Training the Network</h2>
+									<p>The network is trained with a set of pre-determined hyperparameters as showned below. 
+										The hyperparameters are adjusted according to the training and validation accuracy, as well 
+										the loss performance.
+										
+									<pre><code>
+options = trainingOptions('sgdm', 'InitialLearnRate', 0.001,'Momentum', 0.9, 'MaxEpochs', 10, 'MiniBatchSize', 16, ...
+'LearnRateSchedule','piecewise','LearnRateDropFactor', 0.1,'LearnRateDropPeriod', 10, 'L2Regularization', 0.0001, ...
+'ValidationData', augimdsValidation, 'ValidationFrequency', 25, 'ValidationPatience', 5, 'Shuffle', 'every-epoch','ExecutionEnvironment','gpu','Plots','training-progress');
+netTransfer = trainNetwork(augimdsTrain,lgraph,options);
+									
+
+</code></pre>			
+									<p>The training progress graph shows the accuracy of the training and validation set for each iteration to examine for overfitting. 
+										</p>	
+									<div class="box alt">
+										<div class="row gtr-50 gtr-uniform">
+											<div class="col-4"><span class="image fit"><img src="images/training1.png" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="images/training7.jpeg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="images/training3.png" alt="" /></span></div>
+											<!-- Break -->
+											<div class="col-4"><span class="image fit"><img src="images/training6.jpeg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="images/training5.jpeg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="images/training4.jpeg" alt="" /></span></div>
+											<!-- Break -->
+											<div class="col-4"><span class="image fit"><img src="images/training2.jpeg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="images/training8.jpeg" alt="" /></span></div>
+											<div class="col-4"><span class="image fit"><img src="images/training9.jpeg" alt="" /></span></div>
+										</div>
+									</div>
+
+							<hr/>
+
+									<h2>Results Analysis &amp; Visualization</h2>
+
+									
+
+									
+								</p>
+								<div class="box alt">
+									<p>This shows the result of one of trained networks.
+									
+									The confusion chart shows the acccuracy of classification for each class, 
+									as well as which class the network misclassifies the most.
+									<br> The accuracy for the 4 classes is then combined to show the overall pathology which is the main focus in this classification. 
+									<p>
+										<div class="box alt">
+											<div class="row gtr-50 gtr-uniform">
+												<div class="col-6"><span class="image fit"><img src="images/cf.jpeg" alt="" /></span></div>
+												<div class="col-6"><span class="image fit"><img src="images/asdctr-cf.jpeg" alt="" /></span></div>
+										
+						
+									<p>
+									
+									The PCA chart visualizes the 4 classes according to the network's best classification attempt;
+								showing which class is most distinct from each other, and which classes are most confused. 
+									<br>Each class is represented by a different color: ASD_DWM - red, ASD_SWM - orange, CTR_DWM: dark blue, CTR_SWM: light blue.
+									There are also other versions that focus on the pathology of the axons (ASD vs CTR) or the white matter region (DWM vs SWM).</p>
+
+								<div class="box alt">
+									<div class="row gtr-50 gtr-uniform">
+										<div class="col-6"><span class="image fit"><img src="images/2D_MDS.jpeg" alt="" /></span></div>
+										<div class="col-6"><span class="image fit"><img src="images/3D_4class.jpeg" alt="" /></span></div>
+
+										<div class="col-6"><span class="image fit"><img src="images/3D_ASDvsCTR.jpeg" alt="" /></span></div>
+										<div class="col-6"><span class="image fit"><img src="images/3D_MDS_Separate.jpeg" alt="" /></span></div>
+								
+								</div>
+								<hr />
+
+								
+								<h2> Heat Map Analysis</h2>
+								<p> The heat map highlights the areas in an image where the network is looking at the most when
+									classifying an image. The hotter an area is, the more important it is in the final decision. 
+									By studying the area where the network most bases its classification, we can identify the common axon 
+									patterns that are the most "representative" in ASD. 
+								</p>
+								<div class="box alt">
+									<div class="row gtr-50 gtr-uniform">
+										
+										<div class="col-3"><span class="image fit"><img src="images/ASD_SWM1_CC.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/ASD_SWM2_CC.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/ASD_SWM1_MIS.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/ASD_SWM2_MIS.jpeg" alt="" /></span></div>
+										<!-- Break -->
+										<div class="col-3"><span class="image fit"><img src="images/ASD_DWM1_CC.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/ASD_DWM2_CC.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/ASD_DWM1_MIS.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/ASD_DWM2_MIS.jpeg" alt="" /></span></div>
+										<!-- Break -->
+										<div class="col-3"><span class="image fit"><img src="images/CTR_SWM1_CC.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/CTR_SWM2_CC.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/CTR_SWM1_MIS.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/CTR_SWM2_MIS.jpeg" alt="" /></span></div>
+										<!-- Break -->
+										<div class="col-3"><span class="image fit"><img src="images/CTR_DWM1_CC.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/CTR_DWM2_CC.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/CTR_SWM3_MIS.jpeg" alt="" /></span></div>
+										<div class="col-3"><span class="image fit"><img src="images/CTR_SWM4_MIS.jpeg" alt="" /></span></div>
+									</div>
+								</div>
+
+						
+
+							</section>
+
+									
+							<div class="row" style= "display: flex; justify-content: center;">
+								
+								<ul class="actions" style="list-style: none; margin: 0; padding: 0; display: flex;">
+									<li><a href="Project2.html" class="button primary" >Next Project</a></li>
+									
+								</ul>
+							</div>
+			</div>
+
+				<!-- Footer -->
+				<footer id="footer">
+						
+				</section>
+				<section class="split contact">
+					<section class="alt">
+						<h3>Location</h3>
+						<p>Boston, Massachusetts<br />
+						</p>
+					</section>
+					
+					<section>
+						<h3>Email</h3>
+						<p><a href="#">kimdang@bu.edu</a></p>
+					</section>
+					<section>
+						<h3>Social</h3>
+						<ul class="icons alt">
+							<li><a href="https://www.linkedin.com/in/kim-dang-38112a192/" class="icon brands alt fa-linkedin"><span class="label">Linkedin</span></a></li>
+						</ul>
+					</section>
+				</section>
+			</footer>	
+
+		
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+			
+	</body>
+</html>
